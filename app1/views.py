@@ -2,7 +2,6 @@ from django.shortcuts import *
 from .models import todo_task
 from django.contrib import messages
 
-
 # Create your views here.
 
 def home(request):
@@ -15,7 +14,7 @@ def addTask(request):
         title = request.POST.get('title')
         desc = request.POST.get('desc')
         status = request.POST.get('status')
-        completion_date = request.POST.get('completion_date') if status == 'complete' else None
+        completion_date = request.POST.get('completion_date') if status == 'Complete' else None
 
         if not todo_task.objects.filter(title=title).exists():
             task = todo_task(title=title,desc=desc,status=status,completion_date=completion_date)
@@ -47,10 +46,12 @@ def editTask(request, id):
         title = request.POST.get('title')
         desc = request.POST.get('desc')
         status = request.POST.get('status')
+        completion_date = request.POST.get('complition_date')
 
         if status == 'Complete':
-            completion_date = request.POST.get('completion_date')  
-        else:
+            completion_date = request.POST.get('completion_date')
+
+        elif status != 'Complete':
             completion_date = None  
 
         task.title = title
@@ -59,13 +60,8 @@ def editTask(request, id):
         task.completion_date = completion_date
 
         task.save()
-
-        if completion_date:
-            return redirect('home')
-
-        return render(request, 'edit.html', {'task': task})
-
-    return render(request, 'edit.html', {'task': task, 'show_completion_date': task.status == 'Complete'})
+        return redirect('home')
+    return render(request, 'edit.html', {'task': task})
 
 
 def viewTask(request,id):

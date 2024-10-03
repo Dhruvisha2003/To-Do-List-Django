@@ -32,12 +32,10 @@
             <option value="Complete" {% if task.status == 'Complete' %}selected{% endif %}>Complete</option>
         </select>
 
-        {% if task.status == 'Complete' %}
         <div id="completion-date-field">
           <label for="tododate">Completion Date:</label>
           <input type="date" id="tododate" name="completion_date" value="{{task.completion_date}}"/>
         </div>
-        {% endif %}
 
 
         <button type='submit' id="addlist">Update Task</button>
@@ -50,15 +48,19 @@
 
 
 
-    <!-- <script>
-      document.getElementById('todostatus').addEventListener('change', function () {
-        var completionDateField = document.getElementById('completion-date-field');
-        if (this.value === 'complete') {
-          completionDateField.style.display = 'block';
-        } else {
-          completionDateField.style.display = 'none';
-        }
-      });</script> -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      const statusSelect = document.getElementById('todostatus');
+      const completionDateField = document.getElementById('completion-date-field');
+  
+      const toggleCompletionDate = () => {
+          completionDateField.style.display = (statusSelect.value === 'Complete') ? 'block' : 'none';
+      };
+  
+      toggleCompletionDate(); 
+      statusSelect.addEventListener('change', toggleCompletionDate); // Run on change
+  });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"></script>

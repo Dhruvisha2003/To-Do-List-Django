@@ -31,11 +31,11 @@
           <option value="Complete">Complete</option>
         </select>
 
-<!-- 
+
         <div id="completion-date-field" style="display:none;">
           <label for="tododate">Completion Date:</label>
           <input type="date" id="tododate" name="completion_date" />
-        </div> -->
+        </div>
 
         <button id="addlist">Add Task</button>
       </form >
@@ -54,7 +54,19 @@
 
 
 
-   
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      const statusSelect = document.getElementById('todostatus');
+      const completionDateField = document.getElementById('completion-date-field');
+  
+      const toggleCompletionDate = () => {
+          completionDateField.style.display = (statusSelect.value === 'Complete') ? 'block' : 'none';
+      };
+  
+      toggleCompletionDate(); 
+      statusSelect.addEventListener('change', toggleCompletionDate); // Run on change
+  });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"></script>
