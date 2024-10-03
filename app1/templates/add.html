@@ -27,8 +27,8 @@
 
         <label for="todostatus">Status:</label>
         <select name="status" id="todostatus">
-          <option value="Incomplete">Incomplete</option>
-          <option value="Complete">Complete</option>
+          <option value="Incomplete" {% if task.status == 'Incomplete' %}selected{% endif %}>Incomplete</option>
+          <option value="Complete" {% if task.status == 'Complete' %}selected{% endif %}>Complete</option>
         </select>
 
 
@@ -55,17 +55,18 @@
 
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-      const statusSelect = document.getElementById('todostatus');
-      const completionDateField = document.getElementById('completion-date-field');
-  
-      const toggleCompletionDate = () => {
-          completionDateField.style.display = (statusSelect.value === 'Complete') ? 'block' : 'none';
-      };
-  
-      toggleCompletionDate(); 
-      statusSelect.addEventListener('change', toggleCompletionDate); // Run on change
-  });
+      document.addEventListener('DOMContentLoaded', function () {
+        const statusSelect = document.getElementById('todostatus');
+        const completionDateField = document.getElementById('completion-date-field');
+
+        function toggleCompletionDate() {
+          const status = statusSelect.value;
+          completionDateField.style.display = (status === 'Complete') ? 'block' : 'none';
+        }
+        toggleCompletionDate();
+        statusSelect.addEventListener('change', toggleCompletionDate);
+
+      });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
