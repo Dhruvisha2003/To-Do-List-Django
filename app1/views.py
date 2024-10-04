@@ -2,6 +2,7 @@ from django.shortcuts import *
 from .models import todo_task
 from django.contrib import messages
 
+# Create your views here.
 
 def home(request):
     data = todo_task.objects.all()
@@ -25,20 +26,21 @@ def addTask(request):
     
     return render(request,'add.html')
 
+
 def delete_task(request, id):
-    item = todo_task.objects.get(id=id)
+    item = todo_task.objects.get(id=id)             
 
     if request.method == "POST":
         if request.POST.get("confirm") == "yes":
             item.delete()  
             return redirect('home')
-        
         return redirect('home') 
     
     return render(request, 'delete.html', {'item': item})
 
+
 def editTask(request, id):
-    task = todo_task.objects.get(id=id)
+    task = todo_task.objects.get(id=id)  
 
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -52,15 +54,13 @@ def editTask(request, id):
 
         elif status != 'Complete':
             completion_date = None  
-
         task.title = title
         task.desc = desc
         task.status = status
         task.completion_date = completion_date
 
         task.save()
-        
-        messages.success(request,'Your Task has been Updated')
+        messages.success(request,'Your Task Has been Updated')
         return redirect('edit_task', id=task.id)
     return render(request, 'edit.html', {'task': task})
 

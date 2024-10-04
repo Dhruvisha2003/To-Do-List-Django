@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'todo_list',
         'USER': 'postgres',
-        'PASSWORD': 'root',
+        'PASSWORD': 'dhruvi',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -114,7 +114,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ =True
 
 
 # Static files (CSS, JavaScript, Images)
