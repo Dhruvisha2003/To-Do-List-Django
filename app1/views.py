@@ -8,23 +8,34 @@ def home(request):
     data = todo_task.objects.all()
     return render(request,'index.html',{'data':data})
 
+
 def addTask(request):
+    task1 = todo_task.objects.all()
+    
     if request.method == 'POST':
         title = request.POST.get('title')
         desc = request.POST.get('desc')
         status = request.POST.get('status')
         completion_date = request.POST.get('completion_date') if status == 'Complete' else None
+        dropdown_submit = request.POST.get('dropdown_submit', False)
+
+        if dropdown_submit:
+            return render(request, 'add.html', {
+                'task1': task1,
+                'task': {'title': title,'desc': desc,'status': status,'completion_date': completion_date}
+            })
 
         if not todo_task.objects.filter(title=title).exists():
-            task = todo_task(title=title,desc=desc,status=status,completion_date=completion_date)
-            task.save()
+            task = todo_task(title=title, desc=desc, status=status, completion_date=completion_date)
+            task.save() 
+            
+            messages.success(request, "Task added successfully!")
             return redirect('home')
         else:
-            messages.warning(request, "This item is Already in your list")
+            messages.warning(request, "This item is already in your list")
             return redirect('add')
-    
-    return render(request,'add.html')
 
+    return render(request, 'add.html', {'task1': task1})
     
 def delete_task(request, id):
     item = todo_task.objects.get(id=id)             
@@ -37,7 +48,6 @@ def delete_task(request, id):
     
     return render(request, 'delete.html', {'item': item})
 
-
 def editTask(request, id):
     task = todo_task.objects.get(id=id)
 
@@ -45,23 +55,26 @@ def editTask(request, id):
         title = request.POST.get('title')
         desc = request.POST.get('desc')
         status = request.POST.get('status')
+        dropdown_submit = request.POST.get('dropdown_submit', False)
 
         task.title = title
         task.desc = desc
         task.status = status
-
-        if status == 'Complete':
+        
+        if task.status == 'Complete':
             task.completion_date = request.POST.get('completion_date')
+            
         else:
             task.completion_date = None
 
-        task.save()
-
-        messages.success(request, 'Task updated successfully.')
-        return redirect('edit_task',id=task.id) 
+        if not dropdown_submit:
+            task.save()
+        
+        if not dropdown_submit:
+            messages.success(request, 'Task updated successfully.')
+        return render(request, 'edit.html', {'task': task})
 
     return render(request, 'edit.html', {'task': task})
-
 
 def viewTask(request,id):
     task = todo_task.objects.get(id=id)
