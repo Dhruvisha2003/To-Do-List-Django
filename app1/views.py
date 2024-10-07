@@ -28,8 +28,6 @@ def addTask(request):
         if not todo_task.objects.filter(title=title).exists():
             task = todo_task(title=title, desc=desc, status=status, completion_date=completion_date)
             task.save() 
-            
-            messages.success(request, "Task added successfully!")
             return redirect('home')
         else:
             messages.warning(request, "This item is already in your list")
