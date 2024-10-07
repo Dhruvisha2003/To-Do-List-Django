@@ -30,7 +30,7 @@ def delete_task(request, id):
     item = todo_task.objects.get(id=id)             
 
     if request.method == "POST":
-        if request.POST.get("confirm") == "yes":
+        if request.POST.get("confirm") == "Yes":
             item.delete()  
             return redirect('home')
         return redirect('home') 
@@ -46,27 +46,22 @@ def editTask(request, id):
         desc = request.POST.get('desc')
         status = request.POST.get('status')
 
-        post_data = request.POST.copy()
-
-        if status != 'Complete':
-            if 'completion_date' in post_data:
-                post_data.pop('completion_date')
-        
         task.title = title
         task.desc = desc
         task.status = status
-        print(post_data)
+
         if status == 'Complete':
-            task.completion_date = post_data.get('completion_date')
+            task.completion_date = request.POST.get('completion_date')
         else:
-            task.completion_date = None 
-    
+            task.completion_date = None
+
         task.save()
 
-        messages.success(request, 'Your Task Has been Updated')
-        return redirect('edit_task', id=task.id)
+        messages.success(request, 'Task updated successfully.')
+        return redirect('edit_task',id=task.id) 
 
     return render(request, 'edit.html', {'task': task})
+
 
 def viewTask(request,id):
     task = todo_task.objects.get(id=id)
