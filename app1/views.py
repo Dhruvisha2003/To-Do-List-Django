@@ -61,7 +61,8 @@ def editTask(request, id):
         
         if task.status == 'Complete':
             task.completion_date = request.POST.get('completion_date')
-            
+            if task.status == 'Complete' and not task.completion_date:
+                task.completion_date = None
         else:
             task.completion_date = None
 
