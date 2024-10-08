@@ -10,21 +10,23 @@ def home(request):
 
 
 def addTask(request):
-    task1 = todo_task.objects.all()
-    
+
     if request.method == 'POST':
         title = request.POST.get('title')
         desc = request.POST.get('desc')
         status = request.POST.get('status')
-        completion_date = request.POST.get('completion_date') if status == 'Complete' else None
-        dropdown_submit = request.POST.get('dropdown_submit', False)
+        if status == 'Complete':
+            completion_date = request.POST.get('completion_date')
+            if status == 'Complete' and not completion_date:
+                completion_date = None
+        else:
+            task.completion_date = None
 
+        dropdown_submit = request.POST.get('dropdown_submit', False)
         if dropdown_submit:
             return render(request, 'add.html', {
-                'task1': task1,
                 'task': {'title': title,'desc': desc,'status': status,'completion_date': completion_date}
             })
-
         if not todo_task.objects.filter(title=title).exists():
             task = todo_task(title=title, desc=desc, status=status, completion_date=completion_date)
             task.save() 
@@ -32,8 +34,8 @@ def addTask(request):
         else:
             messages.warning(request, "This item is already in your list")
             return redirect('add')
-
-    return render(request, 'add.html', {'task1': task1})
+    print()
+    return render(request, 'add.html')
     
 def delete_task(request, id):
     item = todo_task.objects.get(id=id)             
@@ -61,8 +63,7 @@ def editTask(request, id):
         
         if task.status == 'Complete':
             task.completion_date = request.POST.get('completion_date')
-            if task.status == 'Complete' and not task.completion_date:
-                task.completion_date = None
+    
         else:
             task.completion_date = None
 
