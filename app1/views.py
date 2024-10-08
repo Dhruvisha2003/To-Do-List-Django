@@ -17,8 +17,7 @@ def addTask(request):
         status = request.POST.get('status')
         if status == 'Complete':
             completion_date = request.POST.get('completion_date')
-            if status == 'Complete' and not completion_date:
-                completion_date = None
+
         else:
             task.completion_date = None
 
