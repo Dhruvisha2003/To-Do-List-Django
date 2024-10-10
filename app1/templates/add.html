@@ -34,7 +34,7 @@
         {% if task.status == 'Complete' %}
         <div id="completion-date-field">
           <label for="tododate">Completion Date:</label>
-          <input type="date" id="tododate" name="completion_date" value="{{task.completion_date}}"/>
+          <input type="date" id="tododate" name="completion_date" value="{{task.completion_date}}" required/>
         </div>
         {% endif %}
 

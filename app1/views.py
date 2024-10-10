@@ -15,11 +15,12 @@ def addTask(request):
         title = request.POST.get('title')
         desc = request.POST.get('desc')
         status = request.POST.get('status')
+
         if status == 'Complete':
             completion_date = request.POST.get('completion_date')
 
         else:
-            task.completion_date = None
+            completion_date = None
 
         dropdown_submit = request.POST.get('dropdown_submit', False)
         if dropdown_submit:
@@ -63,7 +64,7 @@ def editTask(request, id):
         if task.status == 'Complete':
             task.completion_date = request.POST.get('completion_date')
     
-        else:
+        else:   
             task.completion_date = None
 
         if not dropdown_submit:
